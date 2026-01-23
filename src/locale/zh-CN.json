@@ -253,7 +253,8 @@
         "show-tutorial": "再次显示",
         "mental-health-window": "显示心理健康警告",
         "save-dialog": "显示保存菜单",
-        "blank-canvas": "从空白画布开始"
+        "blank-canvas": "从空白画布开始",
+        "announcement": "显示公告"
     },
     "import-export": {
         "header": "导入/导出",
