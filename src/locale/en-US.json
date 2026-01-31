@@ -66,6 +66,7 @@
             "box-type": {
                 "header": "Box Type",
                 "default": "Default",
+                "classic": "Classic",
                 "mysekai": "MYSEKAI"
             },
             "font-size": "Font Size",

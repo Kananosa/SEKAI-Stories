@@ -4,6 +4,7 @@ export default interface IText {
     textContainer: PIXI.Container;
     type: {
         default: PIXI.Container;
+        classic: PIXI.Container;
         mySekai: PIXI.Container;
     };
     nameTag: PIXI.Text[];

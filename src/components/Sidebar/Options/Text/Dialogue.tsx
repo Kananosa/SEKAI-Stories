@@ -248,6 +248,18 @@ const Dialogue: React.FC<DialogueProps> = ({
                 <div className="flex-horizontal center padding-top-bottom-10">
                     <RadioButton
                         name="box-type"
+                        value="classic"
+                        id="classic"
+                        onChange={handleTextVariantChange}
+                        data={text.variant}
+                    />
+                    <label className="width-100 radio__label" htmlFor="classic">
+                        {t("text.dialogue.box-type.classic")}
+                    </label>
+                </div>
+                <div className="flex-horizontal center padding-top-bottom-10">
+                    <RadioButton
+                        name="box-type"
                         value="mySekai"
                         id="mySekai"
                         onChange={handleTextVariantChange}

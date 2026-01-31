@@ -461,6 +461,41 @@ const LoadText = async (
     defaultTextBox.addChildAt(defaultTextNameTag, 1);
     defaultTextBox.addChildAt(defaultTextDialogue, 2);
 
+    // Classic Texture
+    const classicTextBackgroundTexture = await Assets.load(
+        "/img/Dialogue_Background_Classic.png",
+    );
+    const classicTextBackgroundSprite = new PIXI.Sprite(
+        classicTextBackgroundTexture,
+    );
+    classicTextBackgroundSprite.width = 1920;
+    classicTextBackgroundSprite.height = 1080;
+
+    const classicTextNameTag = new PIXI.Text(nameTag, {
+        fontFamily: "FOT-RodinNTLGPro-DB",
+        fontSize: 44,
+        fill: 0xffffff,
+    });
+    classicTextNameTag.position.set(295, 730 + textAlignmentCookie);
+
+    const classicTextDialogue = new PIXI.Text(dialogue, {
+        fontFamily: "FOT-RodinNTLGPro-DB",
+        fontSize: 44,
+        fill: 0x444466,
+        wordWrap: true,
+        wordWrapWidth: 1300,
+        breakWords: true,
+        lineHeight: 55,
+    });
+    classicTextDialogue.position.set(245, 805 + textAlignmentCookie);
+
+    const classicTextBox = new PIXI.Container();
+    classicTextBox.addChildAt(classicTextBackgroundSprite, 0);
+    classicTextBox.addChildAt(classicTextNameTag, 1);
+    classicTextBox.addChildAt(classicTextDialogue, 2);
+
+    classicTextBox.visible = false;
+
     // MYSEKAI Texture
     const mySekaiTextBackgroundTexture = await Assets.load(
         "/img/Dialogue_Background_MYSEKAI.png",
@@ -496,7 +531,8 @@ const LoadText = async (
     mySekaiTextBox.visible = false;
 
     textContainer.addChildAt(defaultTextBox, 0);
-    textContainer.addChildAt(mySekaiTextBox, 1);
+    textContainer.addChildAt(classicTextBox, 1);
+    textContainer.addChildAt(mySekaiTextBox, 2);
 
     app.stage.addChildAt(textContainer, childAt);
 
@@ -504,10 +540,15 @@ const LoadText = async (
         textContainer: textContainer,
         type: {
             default: defaultTextBox,
+            classic: classicTextBox,
             mySekai: mySekaiTextBox,
         },
-        nameTag: [defaultTextNameTag, mySekaiTextNameTag],
-        dialogue: [defaultTextDialogue, mySekaiTextDialogue],
+        nameTag: [defaultTextNameTag, classicTextNameTag, mySekaiTextNameTag],
+        dialogue: [
+            defaultTextDialogue,
+            classicTextDialogue,
+            mySekaiTextDialogue,
+        ],
         nameTagString: nameTag,
         dialogueString: dialogue,
         fontSize: 44,
