@@ -137,9 +137,15 @@ const ExportButton: React.FC = () => {
         jsonRef.current = sceneJson;
     }, [sceneJson]);
     useEffect(() => {
-        const interval = setInterval(() => {
-            localStorage.setItem("autoSave", JSON.stringify(jsonRef.current));
-        }, 1000 * 60 * 3);
+        const interval = setInterval(
+            () => {
+                localStorage.setItem(
+                    "autoSave",
+                    JSON.stringify(jsonRef.current),
+                );
+            },
+            1000 * 60 * 3,
+        );
 
         return () => clearInterval(interval);
     }, []);
@@ -155,9 +161,8 @@ const ExportButton: React.FC = () => {
         setLoading(10);
         const firstBackgroundSprite = await getBackground(firstBackgroundData);
         setLoading(15);
-        const secondBackgroundSprite = await getBackground(
-            secondBackgroundData
-        );
+        const secondBackgroundSprite =
+            await getBackground(secondBackgroundData);
 
         if (
             !backgroundSprite ||
@@ -165,7 +170,7 @@ const ExportButton: React.FC = () => {
             !secondBackgroundSprite
         ) {
             throw new Error(
-                "Error from background. Could be that the background does not exist."
+                "Error from background. Could be that the background does not exist.",
             );
         }
 
@@ -205,7 +210,7 @@ const ExportButton: React.FC = () => {
                     const totalSteps = modelJson.length * 5;
                     const currentStep = idx * 5 + x;
                     return 20 + (70 / (totalSteps - 1)) * currentStep;
-                }
+                },
             );
 
             const modelContainer = new PIXI.Container();
@@ -213,16 +218,16 @@ const ExportButton: React.FC = () => {
 
             modelContainer.pivot.set(
                 modelContainer.width / 2,
-                modelContainer.height / 2
+                modelContainer.height / 2,
             );
             modelContainer.scale.set(model.modelTransform?.scale ?? 0.5);
             modelContainer.position.set(
                 model.modelTransform?.x ?? 640,
-                model.modelTransform?.y ?? 870
+                model.modelTransform?.y ?? 870,
             );
             modelContainer.angle = model.modelTransform?.rotation ?? 0;
             const blurFilter = new PIXI.BlurFilter(
-                model.modelTransform?.blur ?? 0
+                model.modelTransform?.blur ?? 0,
             );
             modelContainer.filters = [blurFilter];
             modelWrapper?.addChildAt(modelContainer, idx);
@@ -248,7 +253,7 @@ const ExportButton: React.FC = () => {
                         } catch {
                             return;
                         }
-                    }
+                    },
                 );
             }
 
@@ -300,12 +305,12 @@ const ExportButton: React.FC = () => {
         splitBackground?.first.backgroundContainer.removeChildAt(0);
         splitBackground?.first.backgroundContainer.addChildAt(
             firstBackgroundSprite,
-            0
+            0,
         );
         splitBackground?.second.backgroundContainer.removeChildAt(0);
         splitBackground?.second.backgroundContainer.addChildAt(
             secondBackgroundSprite,
-            0
+            0,
         );
         if (splitBackground?.splitContainer) {
             setSplitBackground({
@@ -352,10 +357,14 @@ const ExportButton: React.FC = () => {
         }
 
         if (text && text.nameTag && text.dialogue) {
-            text.nameTag.text = textNameTag;
-            text.nameTag.updateText(true);
-            text.dialogue.text = textDialogue;
-            text.dialogue.updateText(true);
+            text.nameTag.forEach((t) => {
+                t.text = textNameTag;
+                t.updateText(true);
+            });
+            text.dialogue.forEach((t) => {
+                t.text = textDialogue;
+                t.updateText(true);
+            });
             setText({
                 ...text,
                 nameTagString: textNameTag,
@@ -411,7 +420,7 @@ const ExportButton: React.FC = () => {
                         }
                     } catch (error) {
                         setErrorInformation(
-                            `${String(error)}\n${t("error.import-scene-fail")}`
+                            `${String(error)}\n${t("error.import-scene-fail")}`,
                         );
                         console.error("Error loading scene:", error);
                         setReset(reset + 1);
