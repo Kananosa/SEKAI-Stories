@@ -1,3 +1,7 @@
+/*
+
+Very old code. Not being used anymore.
+
 import * as PIXI from "pixi.js";
 import { Live2DModel } from "@sekai-world/pixi-live2d-display-mulmotion";
 import ISceneContextType from "../types/ISceneContextType";
@@ -14,7 +18,7 @@ export const refreshCanvas = async (context: ISceneContextType) => {
 
     const { app, setApp, text, filter, sceneText, guideline } = context;
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-
+    
     app.stop();
 
     const initApplication = new PIXI.Application({
@@ -32,10 +36,10 @@ export const refreshCanvas = async (context: ISceneContextType) => {
     );
 
     transparentContainer.addChild(transparentSprite);
-
+    
     initApplication.stage.addChildAt(transparentContainer, 0);
     await new Promise((resolve) => setTimeout(resolve, 200));
-
+    
     if (filter?.container) {
         initApplication.stage.addChildAt(filter.container, 1);
     }
@@ -55,3 +59,5 @@ export const refreshCanvas = async (context: ISceneContextType) => {
 
     setApp(initApplication);
 };
+
+*/

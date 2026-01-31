@@ -10,6 +10,7 @@ import Window from "../UI/Window";
 import { useTranslation } from "react-i18next";
 import { SceneContext } from "../../contexts/SceneContext";
 import * as PIXI from "pixi.js";
+import { textTypeYPositions } from "../../utils/Constants";
 
 interface AdjustYPositionProps {
     show: Dispatch<SetStateAction<boolean>>;
@@ -38,7 +39,7 @@ const AdjustYPosition: React.FC<AdjustYPositionProps> = ({
     if (!scene) throw new Error("Context not found");
     const { text, setText } = scene;
     const [textContainer, setTextContainer] = useState<PIXI.Container | null>(
-        null
+        null,
     );
     const [yOffset, setYOffset] = useState<number>(text?.yOffset ?? 0);
     const offsetCanvas = useRef<HTMLCanvasElement | null>(null);
@@ -56,7 +57,7 @@ const AdjustYPosition: React.FC<AdjustYPositionProps> = ({
             });
             const testContainer = new PIXI.Container();
             const testTexture = await PIXI.Texture.fromURL(
-                "/img/canvas-test.png"
+                "/img/canvas-test.png",
             );
             const testSprite = new PIXI.Sprite(testTexture);
             testContainer.addChild(testSprite);
@@ -95,7 +96,7 @@ const AdjustYPosition: React.FC<AdjustYPositionProps> = ({
     }, []);
 
     const handleYOffsetChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const value = Number(event.target.value);
         localStorage.setItem("textAlignment-v2", String(value));
@@ -104,8 +105,12 @@ const AdjustYPosition: React.FC<AdjustYPositionProps> = ({
             textContainer.y = 0 + value;
         }
         if (text) {
-            text.nameTag.y = 775 + value;
-            text.dialogue.y = 845 + value;
+            text.nameTag.forEach((t, i) => {
+                t.y = textTypeYPositions[i][0] + value;
+            });
+            text.dialogue.forEach((d, i) => {
+                d.y = textTypeYPositions[i][1] + value;
+            });
             setText({
                 ...text,
                 yOffset: value,

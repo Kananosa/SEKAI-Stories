@@ -26,7 +26,7 @@ const NameTags: React.FC<NameTagsProps> = ({
             t("character.meiko"),
             t("character.kaito"),
         ],
-        [i18n.language]
+        [i18n.language],
     );
 
     const scene = useContext(SceneContext);
@@ -48,8 +48,10 @@ const NameTags: React.FC<NameTagsProps> = ({
     if (!text) return <p>{t("please-wait")}</p>;
 
     const handleNameTagChange = async (changedNameTag: string) => {
-        text.nameTag.text = changedNameTag;
-        text.nameTag.updateText(true);
+        text.nameTag.forEach((t) => {
+            t.text = changedNameTag;
+            t.updateText(true);
+        });
         setText({
             ...text,
             nameTagString: changedNameTag,
@@ -58,11 +60,11 @@ const NameTags: React.FC<NameTagsProps> = ({
 
     const handleEasyNameTagChange = (
         event: React.ChangeEvent<HTMLInputElement>,
-        nameTag: string
+        nameTag: string,
     ) => {
         const name = event.target.value;
         const radio = document.querySelector(
-            `input[name="name-tag"][value="${nameTag}"]`
+            `input[name="name-tag"][value="${nameTag}"]`,
         ) as HTMLInputElement;
         const changeEasyNameTags = { ...nameTags, [nameTag]: name };
         setNameTags(changeEasyNameTags);
@@ -73,13 +75,15 @@ const NameTags: React.FC<NameTagsProps> = ({
     };
 
     const handleEasyNameTagSelect = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const value = event.target.value;
         let changedNameTag = "";
         changedNameTag = nameTags[value];
-        text.nameTag.text = changedNameTag;
-        text.nameTag.updateText(true);
+        text.nameTag.forEach((t) => {
+            t.text = changedNameTag;
+            t.updateText(true);
+        });
         setText({
             ...text,
             nameTagString: changedNameTag,
@@ -132,7 +136,7 @@ const NameTags: React.FC<NameTagsProps> = ({
                                 onChange={(e) => {
                                     handleEasyNameTagChange(
                                         e,
-                                        `nameTag${index + 1}`
+                                        `nameTag${index + 1}`,
                                     );
                                 }}
                                 placeholder={easyNameTagPlaceholders[index]}
@@ -164,7 +168,7 @@ const NameTags: React.FC<NameTagsProps> = ({
                     setEasySwitch(!easySwitch);
                     localStorage.setItem(
                         "easySwitchEnabled",
-                        String(!easySwitch)
+                        String(!easySwitch),
                     );
                 }}
             />

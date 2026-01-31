@@ -7,6 +7,7 @@ import { SoftErrorContext } from "../../../../contexts/SoftErrorContext";
 import Window from "../../../UI/Window";
 import { mentalCheck } from "../../../../utils/MentalCheck";
 import { SettingsContext } from "../../../../contexts/SettingsContext";
+import RadioButton from "../../../UI/RadioButton";
 
 const symbols = {
     star: "☆",
@@ -56,7 +57,7 @@ const Dialogue: React.FC<DialogueProps> = ({
     if (!text) return <p>{t("please-wait")}</p>;
 
     const handleDialogueBoxVisible = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const visible = Boolean(event?.target.checked);
         if (text?.textContainer) {
@@ -69,13 +70,15 @@ const Dialogue: React.FC<DialogueProps> = ({
     };
 
     const handleDialogueChange = (
-        event: React.ChangeEvent<HTMLTextAreaElement>
+        event: React.ChangeEvent<HTMLTextAreaElement>,
     ) => {
         const changedDialogue = event.target.value
             .replace(/“|”/g, '"')
             .replace(/‘|’/g, "'");
-        text.dialogue.text = changedDialogue;
-        text.dialogue.updateText(true);
+        text.dialogue.forEach((t) => {
+            t.text = changedDialogue;
+            t.updateText(true);
+        });
 
         if (
             /bell/gim.test(changedDialogue) &&
@@ -101,27 +104,33 @@ const Dialogue: React.FC<DialogueProps> = ({
     const handleAddSymbol = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const symbol = event.target.value;
         if (symbol !== "none") {
-            text.dialogue.text += symbol;
-            text.dialogue.updateText(true);
+            text.dialogue.forEach((t) => {
+                t.text += symbol;
+                t.updateText(true);
+            });
             setText({
                 ...text,
-                dialogueString: text.dialogue.text,
+                dialogueString: text.dialogueString + symbol,
             });
         }
     };
 
     const handleFontSizeChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const changedFontSize = Number(event.target.value);
-        text.dialogue.style.fontSize = changedFontSize;
-        text.dialogue.style.strokeThickness = Math.floor(
-            8 + (changedFontSize / 44 - 1) * 2
-        );
-        text.dialogue.style.lineHeight = Math.floor(
-            55 + (changedFontSize / 44 - 1) * 40
-        );
-        text.dialogue.updateText(true);
+        text.dialogue.forEach((t, i) => {
+            t.style.fontSize = changedFontSize;
+            if (i == 0) {
+                t.style.strokeThickness = Math.floor(
+                    8 + (changedFontSize / 44 - 1) * 2,
+                );
+                t.style.lineHeight = Math.floor(
+                    55 + (changedFontSize / 44 - 1) * 40,
+                );
+            }
+            t.updateText(true);
+        });
         setText({
             ...text,
             fontSize: changedFontSize,
@@ -131,92 +140,142 @@ const Dialogue: React.FC<DialogueProps> = ({
     const handleInputFontSizeChange = async (inputChange: string) => {
         if (inputChange == null || isNaN(Number(inputChange))) return;
         const changedFontSize = Number(inputChange);
-        text.dialogue.style.fontSize = changedFontSize;
-        text.dialogue.style.strokeThickness =
-            8 + (changedFontSize / 44 - 1) * 2;
-        text.dialogue.style.lineHeight = Math.floor(
-            55 + (changedFontSize / 44 - 1) * 40
-        );
-        text.dialogue.updateText(true);
+        text.dialogue.forEach((t, i) => {
+            t.style.fontSize = changedFontSize;
+            if (i == 0) {
+                t.style.strokeThickness = 8 + (changedFontSize / 44 - 1) * 2;
+                t.style.lineHeight = Math.floor(
+                    55 + (changedFontSize / 44 - 1) * 40,
+                );
+            }
+            t.updateText(true);
+        });
         setText({
             ...text,
             fontSize: changedFontSize,
         });
     };
+    const handleTextVariantChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const value = event.target.value;
 
+        Object.entries(text.type).forEach(([type, container]) => {
+            container.visible = value === type;
+        });
+
+        setText({
+            ...text,
+            variant: value,
+        });
+    };
     return (
         <>
-            <textarea
-                name="dialogue"
-                id="dialogue"
-                value={text?.dialogueString}
-                onChange={handleDialogueChange}
-            ></textarea>
-            <select
-                name="add-symbol"
-                id="add-symbol"
-                value="none"
-                onChange={handleAddSymbol}
-            >
-                <option value="none" disabled>
-                    {t("text.dialogue.add-symbol")}
-                </option>
-                {Object.entries(symbols).map(([key, value]) => (
-                    <option key={key} value={value}>
-                        {`${value} (${key})`}
+            <div className="option__content">
+                <textarea
+                    name="dialogue"
+                    id="dialogue"
+                    value={text?.dialogueString}
+                    onChange={handleDialogueChange}
+                ></textarea>
+                <select
+                    name="add-symbol"
+                    id="add-symbol"
+                    value="none"
+                    onChange={handleAddSymbol}
+                >
+                    <option value="none" disabled>
+                        {t("text.dialogue.add-symbol")}
                     </option>
-                ))}
-            </select>
-            <div className="transform-icons">
-                <h3>
-                    {t("text.dialogue.font-size")} ({text.fontSize} px)
-                </h3>
-                <div>
-                    <i
-                        className="bi bi-pencil-fill"
-                        onClick={() => setShowFontSizeInput(true)}
-                    ></i>
-                    <i
-                        className={
-                            lockFontSizeState
-                                ? "bi bi-unlock-fill"
-                                : "bi bi-lock-fill"
-                        }
-                        onClick={() => {
-                            setLockFontSizeState(!lockFontSizeState);
-                            localStorage.setItem(
-                                "lockFontSize",
-                                String(!lockFontSizeState)
-                            );
-                        }}
-                    ></i>
+                    {Object.entries(symbols).map(([key, value]) => (
+                        <option key={key} value={value}>
+                            {`${value} (${key})`}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="option__content">
+                <div className="transform-icons">
+                    <h3>
+                        {t("text.dialogue.font-size")} ({text.fontSize} px)
+                    </h3>
+                    <div>
+                        <i
+                            className="bi bi-pencil-fill"
+                            onClick={() => setShowFontSizeInput(true)}
+                        ></i>
+                        <i
+                            className={
+                                lockFontSizeState
+                                    ? "bi bi-unlock-fill"
+                                    : "bi bi-lock-fill"
+                            }
+                            onClick={() => {
+                                setLockFontSizeState(!lockFontSizeState);
+                                localStorage.setItem(
+                                    "lockFontSize",
+                                    String(!lockFontSizeState),
+                                );
+                            }}
+                        ></i>
+                    </div>
+                </div>
+                <input
+                    type="range"
+                    name="font-size"
+                    id="font-size"
+                    value={text.fontSize}
+                    min={10}
+                    max={120}
+                    onChange={handleFontSizeChange}
+                    {...(lockFontSizeState ? { disabled: true } : {})}
+                />
+            </div>
+            <div className="option__content">
+                <h3>{t("text.dialogue.box-type.header")}</h3>
+                <div className="flex-horizontal center padding-top-bottom-10">
+                    <RadioButton
+                        name="box-type"
+                        value="default"
+                        id="default"
+                        onChange={handleTextVariantChange}
+                        data={text.variant}
+                    />
+                    <label className="width-100 radio__label" htmlFor="default">
+                        {t("text.dialogue.box-type.default")}
+                    </label>
+                </div>
+                <div className="flex-horizontal center padding-top-bottom-10">
+                    <RadioButton
+                        name="box-type"
+                        value="mySekai"
+                        id="mySekai"
+                        onChange={handleTextVariantChange}
+                        data={text.variant}
+                    />
+                    <label className="width-100 radio__label" htmlFor="mySekai">
+                        {t("text.dialogue.box-type.mysekai")}
+                    </label>
                 </div>
             </div>
-            <input
-                type="range"
-                name="font-size"
-                id="font-size"
-                value={text.fontSize}
-                min={10}
-                max={120}
-                onChange={handleFontSizeChange}
-                {...(lockFontSizeState ? { disabled: true } : {})}
-            />
-            <Checkbox
-                id="visible"
-                label={t("global.visible")}
-                checked={text.visible}
-                onChange={handleDialogueBoxVisible}
-            />
-            {showFontSizeInput && (
-                <InputWindow
-                    show={setShowFontSizeInput}
-                    confirmFunction={(x: string) =>
-                        handleInputFontSizeChange(x)
-                    }
-                    description={t("text.dialogue.enter-font-size")}
+            <div className="option__content">
+                <h3>{t("global.toggles")}</h3>
+                <Checkbox
+                    id="visible"
+                    label={t("global.visible")}
+                    checked={text.visible}
+                    onChange={handleDialogueBoxVisible}
                 />
-            )}
+                {showFontSizeInput && (
+                    <InputWindow
+                        show={setShowFontSizeInput}
+                        confirmFunction={(x: string) =>
+                            handleInputFontSizeChange(x)
+                        }
+                        description={t("text.dialogue.enter-font-size")}
+                    />
+                )}
+            </div>
             {mentalWindow && (
                 <Window
                     show={setMentalWindow}
@@ -225,7 +284,7 @@ const Dialogue: React.FC<DialogueProps> = ({
                             onClick={() => {
                                 window.open(
                                     "https://www.google.com/search?q=suicide+hotline",
-                                    "_blank"
+                                    "_blank",
                                 );
                                 setMentalFound(true);
                             }}

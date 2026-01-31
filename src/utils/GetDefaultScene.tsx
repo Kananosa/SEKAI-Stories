@@ -273,7 +273,7 @@ const secondSplitBackgroundFilename = "/background_compressed/bg_e000403.jpg";
 const LoadBackground = async (
     container: PIXI.Container,
     childAt: number,
-    fileName: string
+    fileName: string,
 ): Promise<IBackground> => {
     const backgroundContainer = new PIXI.Container();
     const backgroundSprite = await getBackground(fileName);
@@ -289,12 +289,12 @@ const LoadBackground = async (
 
 const LoadSplitBackground = async (
     container: PIXI.Container,
-    childAt: number
+    childAt: number,
 ): Promise<ISplitBackground> => {
     const splitBackgroundContainer = new PIXI.Container();
     const firstBackground = new PIXI.Container();
     const firstBackgroundSprite = await getBackground(
-        firstSplitBackgroundFilename
+        firstSplitBackgroundFilename,
     );
     const firstMask = new PIXI.Graphics();
     firstMask.beginFill();
@@ -307,7 +307,7 @@ const LoadSplitBackground = async (
     firstBackground.addChild(firstBackgroundSprite);
     const secondBackground = new PIXI.Container();
     const secondBackgroundSprite = await getBackground(
-        secondSplitBackgroundFilename
+        secondSplitBackgroundFilename,
     );
     const secondMask = new PIXI.Graphics();
     secondMask.beginFill();
@@ -353,7 +353,7 @@ const LoadModel = async (
     file: string,
     x: number,
     y: number,
-    scale?: number
+    scale?: number,
 ): Promise<{
     model: Record<string, IModel>;
     modelWrapper: PIXI.Container;
@@ -367,7 +367,7 @@ const LoadModel = async (
     modelWrapper.addChildAt(modelContainer, 0);
     modelContainer.pivot.set(
         modelContainer.width / 2,
-        modelContainer.height / 2
+        modelContainer.height / 2,
     );
     modelContainer.position.set(x, y);
     modelContainer.scale.set(scale, scale);
@@ -416,30 +416,34 @@ const LoadText = async (
     app: PIXI.Application,
     childAt: number,
     nameTag: string,
-    dialogue: string
+    dialogue: string,
 ): Promise<IText> => {
     const textAlignmentCookie = Number(
-        localStorage.getItem("textAlignment-v2") ?? 0
+        localStorage.getItem("textAlignment-v2") ?? 0,
     );
 
     const textContainer = new PIXI.Container();
-    const textBackgroundTexture = await Assets.load(
-        "/img/Dialogue_Background.png"
-    );
-    const textBackgroundSprite = new PIXI.Sprite(textBackgroundTexture);
-    textBackgroundSprite.width = 1920;
-    textBackgroundSprite.height = 1080;
 
-    const textNameTag = new PIXI.Text(nameTag, {
+    // Default Texture
+    const defaultTextBackgroundTexture = await Assets.load(
+        "/img/Dialogue_Background.png",
+    );
+    const defaultTextBackgroundSprite = new PIXI.Sprite(
+        defaultTextBackgroundTexture,
+    );
+    defaultTextBackgroundSprite.width = 1920;
+    defaultTextBackgroundSprite.height = 1080;
+
+    const defaultTextNameTag = new PIXI.Text(nameTag, {
         fontFamily: "FOT-RodinNTLGPro-EB",
         fontSize: 44,
         fill: 0xebebef,
         stroke: 0x5d5d79,
         strokeThickness: 8,
     });
-    textNameTag.position.set(225, 775 + textAlignmentCookie);
+    defaultTextNameTag.position.set(225, 775 + textAlignmentCookie);
 
-    const textDialogue = new PIXI.Text(dialogue, {
+    const defaultTextDialogue = new PIXI.Text(dialogue, {
         fontFamily: "FOT-RodinNTLGPro-DB",
         fontSize: 44,
         fill: 0xffffff,
@@ -450,24 +454,67 @@ const LoadText = async (
         breakWords: true,
         lineHeight: 55,
     });
-    textDialogue.position.set(245, 845 + textAlignmentCookie);
+    defaultTextDialogue.position.set(245, 845 + textAlignmentCookie);
 
-    textContainer.addChildAt(textBackgroundSprite, 0);
-    textContainer.addChildAt(textNameTag, 1);
-    textContainer.addChildAt(textDialogue, 2);
+    const defaultTextBox = new PIXI.Container();
+    defaultTextBox.addChildAt(defaultTextBackgroundSprite, 0);
+    defaultTextBox.addChildAt(defaultTextNameTag, 1);
+    defaultTextBox.addChildAt(defaultTextDialogue, 2);
+
+    // MYSEKAI Texture
+    const mySekaiTextBackgroundTexture = await Assets.load(
+        "/img/Dialogue_Background_MYSEKAI.png",
+    );
+    const mySekaiTextBackgroundSprite = new PIXI.Sprite(
+        mySekaiTextBackgroundTexture,
+    );
+    mySekaiTextBackgroundSprite.width = 1920;
+    mySekaiTextBackgroundSprite.height = 1080;
+
+    const mySekaiTextNameTag = new PIXI.Text(nameTag, {
+        fontFamily: "FOT-RodinNTLGPro-EB",
+        fontSize: 44,
+        fill: 0x444466,
+    });
+    mySekaiTextNameTag.position.set(265, 745 + textAlignmentCookie);
+
+    const mySekaiTextDialogue = new PIXI.Text(dialogue, {
+        fontFamily: "FOT-RodinNTLGPro-DB",
+        fontSize: 44,
+        fill: 0x444466,
+        wordWrap: true,
+        wordWrapWidth: 1300,
+        breakWords: true,
+        lineHeight: 55,
+    });
+    mySekaiTextDialogue.position.set(265, 810 + textAlignmentCookie);
+
+    const mySekaiTextBox = new PIXI.Container();
+    mySekaiTextBox.addChildAt(mySekaiTextBackgroundSprite, 0);
+    mySekaiTextBox.addChildAt(mySekaiTextNameTag, 1);
+    mySekaiTextBox.addChildAt(mySekaiTextDialogue, 2);
+    mySekaiTextBox.visible = false;
+
+    textContainer.addChildAt(defaultTextBox, 0);
+    textContainer.addChildAt(mySekaiTextBox, 1);
 
     app.stage.addChildAt(textContainer, childAt);
 
     return {
         textContainer: textContainer,
-        nameTag: textNameTag,
-        dialogue: textDialogue,
+        type: {
+            default: defaultTextBox,
+            mySekai: mySekaiTextBox,
+        },
+        nameTag: [defaultTextNameTag, mySekaiTextNameTag],
+        dialogue: [defaultTextDialogue, mySekaiTextDialogue],
         nameTagString: nameTag,
         dialogueString: dialogue,
         fontSize: 44,
         visible: true,
         yOffset: textAlignmentCookie,
         hideEverything: false,
+        variant: "default",
     };
 };
 

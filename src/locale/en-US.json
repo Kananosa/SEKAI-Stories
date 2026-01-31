@@ -63,6 +63,11 @@
         },
         "dialogue": {
             "header": "Dialogue",
+            "box-type": {
+                "header": "Box Type",
+                "default": "Default",
+                "mysekai": "MYSEKAI"
+            },
             "font-size": "Font Size",
             "enter-font-size": "Enter a font size.",
             "add-symbol": "Add a symbol"
