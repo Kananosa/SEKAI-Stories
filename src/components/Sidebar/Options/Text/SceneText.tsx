@@ -15,7 +15,7 @@ const SceneText: React.FC = () => {
     if (!text || !sceneText) return <p>{t("please-wait")}</p>;
 
     const handleSceneTextVisible = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const visible = Boolean(event?.target.checked);
         if (sceneText?.sceneTextContainer) {
@@ -38,7 +38,7 @@ const SceneText: React.FC = () => {
     };
 
     const handleHideEverything = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         if (!modelWrapper) {
             return;
@@ -55,7 +55,7 @@ const SceneText: React.FC = () => {
     };
 
     const handleSceneTextChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const changedSceneText = event.target.value
             .replace(/“|”/g, '"')
@@ -73,20 +73,13 @@ const SceneText: React.FC = () => {
     };
 
     const handleSceneTextVariantChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const value = event.target.value;
 
-        switch (value) {
-            case "top-left":
-                sceneText.middle.visible = false;
-                sceneText.topLeft.visible = true;
-                break;
-            case "middle":
-                sceneText.middle.visible = true;
-                sceneText.topLeft.visible = false;
-                break;
-        }
+        Object.entries(sceneText.type).forEach(([type, container]) => {
+            container.visible = value === type;
+        });
 
         setSceneText({
             ...sceneText,
@@ -122,15 +115,12 @@ const SceneText: React.FC = () => {
                 <div className="flex-horizontal center padding-top-bottom-10">
                     <RadioButton
                         name="scene-text-variant"
-                        value="top-left"
-                        id="top-left"
+                        value="topLeft"
+                        id="topLeft"
                         onChange={handleSceneTextVariantChange}
                         data={sceneText.variant}
                     />
-                    <label
-                        className="width-100 radio__label"
-                        htmlFor="top-left"
-                    >
+                    <label className="width-100 radio__label" htmlFor="topLeft">
                         {t("text.scene-text.variant.top-left")}
                     </label>
                 </div>

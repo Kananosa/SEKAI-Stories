@@ -521,13 +521,13 @@ const LoadText = async (
 const LoadSceneText = async (
     app: PIXI.Application,
     childAt: number,
-    scene: string
+    scene: string,
 ): Promise<ISceneText> => {
     const sceneTextContainer = new PIXI.Container();
 
     // Middle Texture
     const sceneTextMiddleTexture = await Assets.load(
-        "/img/SceneText_Background.png"
+        "/img/SceneText_Background.png",
     );
     const sceneTextMiddleSprite = new PIXI.Sprite(sceneTextMiddleTexture);
     const sceneTextMiddle = new PIXI.Text(scene, {
@@ -545,7 +545,7 @@ const LoadSceneText = async (
 
     // Top-left Texture
     const sceneTextTopLeftTexture = await Assets.load(
-        "/img/SceneText_TopLeft.png"
+        "/img/SceneText_TopLeft.png",
     );
     const sceneTextTopLeftSprite = new PIXI.Sprite(sceneTextTopLeftTexture);
     const sceneTextTopLeft = new PIXI.Text(scene, {
@@ -571,8 +571,10 @@ const LoadSceneText = async (
 
     return {
         sceneTextContainer: sceneTextContainer,
-        middle: sceneTextMiddleContainer,
-        topLeft: sceneTextTopLeftContainer,
+        type: {
+            middle: sceneTextMiddleContainer,
+            topLeft: sceneTextTopLeftContainer,
+        },
         text: [sceneTextMiddle, sceneTextTopLeft],
         textString: scene,
         visible: false,
@@ -582,7 +584,7 @@ const LoadSceneText = async (
 
 const LoadGuideline = async (
     app: PIXI.Application,
-    childAt: number
+    childAt: number,
 ): Promise<IGuideline> => {
     const guidelineContainer = new PIXI.Container();
     const gridTexture = await Assets.load("/img/grid.png");
@@ -630,7 +632,7 @@ export const LoadScene = async ({
     // Load Transparent (for development. idk why it causes issues before production)
     const transparentContainer = new PIXI.Container();
     const transparentSprite = await getBackground(
-        "/background_special/Background_Transparent.png"
+        "/background_special/Background_Transparent.png",
     );
     transparentContainer.addChildAt(transparentSprite, 0);
     initApplication.stage.addChildAt(transparentContainer, 0);
@@ -650,7 +652,7 @@ export const LoadScene = async ({
     const background = await LoadBackground(
         filterContainer,
         0,
-        initialScene["background"]
+        initialScene["background"],
     );
 
     setLoading(50);
@@ -665,7 +667,7 @@ export const LoadScene = async ({
         initialScene.pngName,
         initialScene.modelX,
         initialScene.modelY,
-        initialScene.modelScale ?? 1
+        initialScene.modelScale ?? 1,
     );
 
     setLoading(70);
@@ -675,7 +677,7 @@ export const LoadScene = async ({
         initApplication,
         2,
         initialScene.nameTag,
-        initialScene.text
+        initialScene.text,
     );
 
     setLoading(80);
@@ -683,7 +685,7 @@ export const LoadScene = async ({
     const sceneText = await LoadSceneText(
         initApplication,
         3,
-        initialScene.sceneText
+        initialScene.sceneText,
     );
 
     setLoading(90);
