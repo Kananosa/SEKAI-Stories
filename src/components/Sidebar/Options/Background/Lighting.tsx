@@ -41,7 +41,7 @@ const defaultPresets: Record<string, ILighting> = {
         brightness: 1.15,
         saturation: 1,
     },
-    silhoutte: {
+    silhouette: {
         red: 1,
         green: 1,
         blue: 1,
