@@ -7,7 +7,8 @@ Release date: February 1, 2026 (will not release date line anymore)
   * MYSEKAI (post-MYSEKAI Update)
 - Added Scene Text Box Types!
   * Classic Top-Left 
-  * Classic Middile
+  * Classic Middle
+- Added Sunset Preset on Lighting
 - Updated Chinese (Simplified) and Filipino Translation
 
 # 5.9.5

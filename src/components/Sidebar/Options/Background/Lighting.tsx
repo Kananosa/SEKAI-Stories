@@ -20,6 +20,13 @@ const defaultPresets: Record<string, ILighting> = {
         brightness: 1,
         saturation: 1,
     },
+    sunset: {
+        red: 1,
+        green: 0.7,
+        blue: 0.5,
+        brightness: 1,
+        saturation: 1,
+    },
     night: {
         red: 0.9,
         green: 0.9,
@@ -230,7 +237,8 @@ const Lighting: React.FC = () => {
             <div className="option__content">
                 <div className="transform-icons">
                     <h3>
-                        {t("background.lighting.brightness")} ({lighting.brightness})
+                        {t("background.lighting.brightness")} (
+                        {lighting.brightness})
                     </h3>
                     <div>
                         <i
@@ -259,7 +267,8 @@ const Lighting: React.FC = () => {
             <div className="option__content">
                 <div className="transform-icons">
                     <h3>
-                        {t("background.lighting.saturation")} ({lighting.saturation})
+                        {t("background.lighting.saturation")} (
+                        {lighting.saturation})
                     </h3>
                     <div>
                         <i
