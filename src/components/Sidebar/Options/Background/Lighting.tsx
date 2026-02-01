@@ -15,7 +15,7 @@ const defaultPresets: Record<string, ILighting> = {
     },
     warm: {
         red: 1,
-        green: 1,
+        green: 0.95,
         blue: 0.85,
         brightness: 1,
         saturation: 1,
