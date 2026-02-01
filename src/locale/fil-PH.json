@@ -65,7 +65,13 @@
             "header": "Dayalogo",
             "font-size": "Laki ng teksto",
             "enter-font-size": "Maglagay ng laki ng teksto.",
-            "add-symbol": "Magdagdag ng simbolo"
+            "add-symbol": "Magdagdag ng simbolo",
+            "box-type": {
+                "header": "Uri ng Box",
+                "default": "Default",
+                "classic": "Klasik",
+                "mysekai": "MYSEKAI"
+            }
         },
         "scene-text": {
             "header": "Eksena",
@@ -73,6 +79,12 @@
                 "header": "Mga Variant",
                 "middle": "Gitna",
                 "top-left": "Itaas't sa kaliwa"
+            },
+            "box-type": {
+                "header": "Uri ng Box",
+                "default": "Default",
+                "classic": "Klasik",
+                "mysekai": "MYSEKAI"
             },
             "hide-everything": "Itago ang mga modelo at dayalogo"
         },
