@@ -1,3 +1,15 @@
+# 2026.02.01 (Version 6.0.0)
+Release date: February 1, 2026 (will not release date line anymore)
+- Changed changelog format to use release date instead of version date
+- Added Box Types for Text Dialogues!
+  * Default
+  * Classic (pre-3rd Anniversary Update Dialogue Box)
+  * MYSEKAI (post-MYSEKAI Update)
+- Added Scene Text Box Types!
+  * Classic Top-Left 
+  * Classic Middile
+- Updated Chinese (Traditional) and Filipino Translation
+
 # 5.9.5
 Release date: January 21, 2026
 - Updated Thai Translation
