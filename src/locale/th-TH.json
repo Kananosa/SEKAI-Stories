@@ -35,6 +35,7 @@
                 "select-preset": "เลือกพรีเซ็ต",
                 "default": "ค่าเริ่มต้น",
                 "warm": "อบอุ่น",
+                "sunset": "ตกค่ำ",
                 "night": "กลางคืน",
                 "off": "ไฟปิด",
                 "bright": "สว่าง",
@@ -63,6 +64,12 @@
         },
         "dialogue": {
             "header": "บทสนทนา",
+            "box-type": {
+                "header": "ประเภทกล่อง",
+                "default": "ค่าเริ่มต้น",
+                "classic": "คลาสสิก",
+                "mysekai": "MYSEKAI"
+            },
             "font-size": "ขนาดตัวอักษร",
             "enter-font-size": "ใส่ขนาดตัวอักษร",
             "add-symbol": "เพิ่มสัญลักษณ์"
@@ -73,6 +80,11 @@
                 "header": "ตำแหน่ง",
                 "middle": "กลาง",
                 "top-left": "บนซ้าย"
+            },
+            "box-type": {
+                "header": "ประเภทกล่อง",
+                "default": "ค่าเริ่มต้น",
+                "classic": "คลาสสิก"
             },
             "hide-everything": "ซ่อนโมเดลและบทสนทนา"
         },
