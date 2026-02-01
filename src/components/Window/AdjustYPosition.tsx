@@ -27,6 +27,7 @@ const randomMessage = [
     "missingno.",
     "mizukey",
     "SIFAS died for this.",
+    "C'mere, Mafuyu-chan"
 ];
 
 const AdjustYPosition: React.FC<AdjustYPositionProps> = ({

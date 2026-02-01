@@ -77,13 +77,13 @@ const SceneText: React.FC = () => {
     ) => {
         const value = event.target.value;
 
-        Object.entries(sceneText.type).forEach(([type, container]) => {
+        Object.entries(sceneText.variant).forEach(([type, container]) => {
             container.visible = value === type;
         });
 
         setSceneText({
             ...sceneText,
-            variant: value,
+            variantSelected: value,
         });
     };
 
@@ -106,7 +106,7 @@ const SceneText: React.FC = () => {
                         value="middle"
                         onChange={handleSceneTextVariantChange}
                         id="middle"
-                        data={sceneText.variant}
+                        data={sceneText.variantSelected}
                     />
                     <label className="width-100 radio__label" htmlFor="middle">
                         {t("text.scene-text.variant.middle")}
@@ -118,7 +118,7 @@ const SceneText: React.FC = () => {
                         value="topLeft"
                         id="topLeft"
                         onChange={handleSceneTextVariantChange}
-                        data={sceneText.variant}
+                        data={sceneText.variantSelected}
                     />
                     <label className="width-100 radio__label" htmlFor="topLeft">
                         {t("text.scene-text.variant.top-left")}

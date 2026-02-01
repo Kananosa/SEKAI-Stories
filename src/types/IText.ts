@@ -15,5 +15,5 @@ export default interface IText {
     fontSize: number;
     visible: boolean;
     hideEverything: boolean;
-    variant: string;
+    typeSelected: string;
 }

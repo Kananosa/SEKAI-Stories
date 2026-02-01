@@ -555,7 +555,7 @@ const LoadText = async (
         visible: true,
         yOffset: textAlignmentCookie,
         hideEverything: false,
-        variant: "default",
+        typeSelected: "default",
     };
 };
 
@@ -612,14 +612,14 @@ const LoadSceneText = async (
 
     return {
         sceneTextContainer: sceneTextContainer,
-        type: {
+        variant: {
             middle: sceneTextMiddleContainer,
             topLeft: sceneTextTopLeftContainer,
         },
         text: [sceneTextMiddle, sceneTextTopLeft],
         textString: scene,
         visible: false,
-        variant: "middle",
+        variantSelected: "middle",
     };
 };
 

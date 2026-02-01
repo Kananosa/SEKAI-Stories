@@ -155,7 +155,7 @@ const Dialogue: React.FC<DialogueProps> = ({
             fontSize: changedFontSize,
         });
     };
-    const handleTextVariantChange = (
+    const handleTextBoxTypeChange = (
         event: React.ChangeEvent<HTMLInputElement>,
     ) => {
         const value = event.target.value;
@@ -166,7 +166,7 @@ const Dialogue: React.FC<DialogueProps> = ({
 
         setText({
             ...text,
-            variant: value,
+            typeSelected: value,
         });
     };
     return (
@@ -238,8 +238,8 @@ const Dialogue: React.FC<DialogueProps> = ({
                         name="box-type"
                         value="default"
                         id="default"
-                        onChange={handleTextVariantChange}
-                        data={text.variant}
+                        onChange={handleTextBoxTypeChange}
+                        data={text.typeSelected}
                     />
                     <label className="width-100 radio__label" htmlFor="default">
                         {t("text.dialogue.box-type.default")}
@@ -250,8 +250,8 @@ const Dialogue: React.FC<DialogueProps> = ({
                         name="box-type"
                         value="classic"
                         id="classic"
-                        onChange={handleTextVariantChange}
-                        data={text.variant}
+                        onChange={handleTextBoxTypeChange}
+                        data={text.typeSelected}
                     />
                     <label className="width-100 radio__label" htmlFor="classic">
                         {t("text.dialogue.box-type.classic")}
@@ -262,8 +262,8 @@ const Dialogue: React.FC<DialogueProps> = ({
                         name="box-type"
                         value="mySekai"
                         id="mySekai"
-                        onChange={handleTextVariantChange}
-                        data={text.variant}
+                        onChange={handleTextBoxTypeChange}
+                        data={text.typeSelected}
                     />
                     <label className="width-100 radio__label" htmlFor="mySekai">
                         {t("text.dialogue.box-type.mysekai")}
