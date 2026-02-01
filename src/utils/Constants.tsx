@@ -1,6 +1,6 @@
 export const staticUrl = "/live2d";
 export const sekaiUrl = "https://storage.sekai.best/sekai-live2d-assets/live2d";
-export const announcementKey = "5.9.5-announcements";
+export const announcementKey = "2025.02.01-update";
 
 export const textTypeYPositions = [
     [775, 845],

@@ -8,7 +8,7 @@ Release date: February 1, 2026 (will not release date line anymore)
 - Added Scene Text Box Types!
   * Classic Top-Left 
   * Classic Middile
-- Updated Chinese (Traditional) and Filipino Translation
+- Updated Chinese (Simplified) and Filipino Translation
 
 # 5.9.5
 Release date: January 21, 2026

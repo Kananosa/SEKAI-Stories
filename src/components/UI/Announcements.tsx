@@ -22,25 +22,33 @@ const Announcements: React.FC = () => {
     return (
         <div id="announcements" onClick={handleAnnouncements}>
             <h2>Notice</h2>
-            <p>A few minor updates have been done.</p>
+            <p>Few updates have been made!</p>
             <ul>
-                <li>Idle Animation is now disabled by default.</li>
                 <li>
-                    Added a toggle to show the notice announcement on
-                    Settings.
+                    Introducing Dialogue Box Types! Choose from Default Dialogue
+                    Box, Old Dialogue Box, or MYSEKAI's Dialogue Box!
                 </li>
                 <li>
-                    Removed the guidelines and experimental toggle on Settings.
+                    Scene Text Box Types are also added to match the look of the
+                    scene text and the dialogue box!
                 </li>
-                <li>
-                    Replaced the Live2D issue message on certain models. This
-                    can be removed by just tapping or clicking.
-                </li>
-                <li>
-                    Updated Thai, Polish, and Filipino translations
-                </li>
+                <li>Updated Chinese (Simplified) and Filipino Translation</li>
             </ul>
-            <p>With the recent update of MYSEKAI, I am currently planning to make a textbox variant for this!</p>
+            <p>
+                You can also view the announcement on Ko-fi. (It's been long
+                since I touched it xD)
+            </p>
+            <button
+                className="btn-regular btn-blue"
+                onClick={() => {
+                    window.open(
+                        "https://ko-fi.com/post/SEKAI-Stories-New-Updates-D1D01TE4P7",
+                        "_blank",
+                    );
+                }}
+            >
+                Ko-fi Announcement
+            </button>
             <p>Tap this section to close.</p>
         </div>
     );
