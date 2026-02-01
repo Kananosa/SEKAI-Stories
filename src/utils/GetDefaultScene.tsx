@@ -412,6 +412,9 @@ const LoadModel = async (
     };
 };
 
+/**
+ * TODO: Refactor this massive block of shit.
+ */
 const LoadText = async (
     app: PIXI.Application,
     childAt: number,
@@ -559,6 +562,9 @@ const LoadText = async (
     };
 };
 
+/**
+ * TODO: Refactor this massive block of shit.
+ */
 const LoadSceneText = async (
     app: PIXI.Application,
     childAt: number,
@@ -566,45 +572,105 @@ const LoadSceneText = async (
 ): Promise<ISceneText> => {
     const sceneTextContainer = new PIXI.Container();
 
-    // Middle Texture
-    const sceneTextMiddleTexture = await Assets.load(
+    // Default Middle Texture
+    const defaultSceneTextMiddleTexture = await Assets.load(
         "/img/SceneText_Background.png",
     );
-    const sceneTextMiddleSprite = new PIXI.Sprite(sceneTextMiddleTexture);
-    const sceneTextMiddle = new PIXI.Text(scene, {
+    const defaultSceneTextMiddleSprite = new PIXI.Sprite(
+        defaultSceneTextMiddleTexture,
+    );
+    const defaultSceneTextMiddle = new PIXI.Text(scene, {
         fontFamily: "FOT-RodinNTLGPro-DB",
         fontSize: 44,
         fill: 0xffffff,
         align: "center",
     });
-    sceneTextMiddle.anchor.set(0.5, 0.5);
-    sceneTextMiddle.position.set(960, 540);
+    defaultSceneTextMiddle.anchor.set(0.5, 0.5);
+    defaultSceneTextMiddle.position.set(960, 540);
 
-    const sceneTextMiddleContainer = new PIXI.Container();
-    sceneTextMiddleContainer.addChildAt(sceneTextMiddleSprite, 0);
-    sceneTextMiddleContainer.addChildAt(sceneTextMiddle, 1);
+    const defaultSceneTextMiddleContainer = new PIXI.Container();
+    defaultSceneTextMiddleContainer.addChildAt(defaultSceneTextMiddleSprite, 0);
+    defaultSceneTextMiddleContainer.addChildAt(defaultSceneTextMiddle, 1);
 
-    // Top-left Texture
-    const sceneTextTopLeftTexture = await Assets.load(
+    // Default Top-left Texture
+    const defaultSceneTextTopLeftTexture = await Assets.load(
         "/img/SceneText_TopLeft.png",
     );
-    const sceneTextTopLeftSprite = new PIXI.Sprite(sceneTextTopLeftTexture);
-    const sceneTextTopLeft = new PIXI.Text(scene, {
+    const defaultSceneTextTopLeftSprite = new PIXI.Sprite(
+        defaultSceneTextTopLeftTexture,
+    );
+    const defaultSceneTextTopLeft = new PIXI.Text(scene, {
         fontFamily: "FOT-RodinNTLGPro-DB",
         fontSize: 39,
         fill: 0xffffff,
         align: "center",
     });
-    sceneTextTopLeft.anchor.set(0, 0.5);
-    sceneTextTopLeft.position.set(120, 62);
+    defaultSceneTextTopLeft.anchor.set(0, 0.5);
+    defaultSceneTextTopLeft.position.set(120, 62);
 
-    const sceneTextTopLeftContainer = new PIXI.Container();
-    sceneTextTopLeftContainer.addChildAt(sceneTextTopLeftSprite, 0);
-    sceneTextTopLeftContainer.addChildAt(sceneTextTopLeft, 1);
-    sceneTextTopLeftContainer.visible = false;
+    const defaultSceneTextTopLeftContainer = new PIXI.Container();
+    defaultSceneTextTopLeftContainer.addChildAt(
+        defaultSceneTextTopLeftSprite,
+        0,
+    );
+    defaultSceneTextTopLeftContainer.addChildAt(defaultSceneTextTopLeft, 1);
+    defaultSceneTextTopLeftContainer.visible = false;
 
-    sceneTextContainer.addChildAt(sceneTextMiddleContainer, 0);
-    sceneTextContainer.addChildAt(sceneTextTopLeftContainer, 1);
+    const defaultSceneTextBox = new PIXI.Container();
+    defaultSceneTextBox.addChildAt(defaultSceneTextMiddleContainer, 0);
+    defaultSceneTextBox.addChildAt(defaultSceneTextTopLeftContainer, 1);
+
+    // Classic Center Texture
+    const classicSceneTextMiddleTexture = await Assets.load(
+        "/img/SceneText_Background_Classic.png",
+    );
+    const classicSceneTextMiddleSprite = new PIXI.Sprite(
+        classicSceneTextMiddleTexture,
+    );
+    const classicSceneTextMiddle = new PIXI.Text(scene, {
+        fontFamily: "FOT-RodinNTLGPro-DB",
+        fontSize: 40,
+        fill: 0xffffff,
+        align: "center",
+    });
+    classicSceneTextMiddle.anchor.set(0.5, 0.5);
+    classicSceneTextMiddle.position.set(960, 540);
+
+    const classicSceneTextMiddleContainer = new PIXI.Container();
+    classicSceneTextMiddleContainer.addChildAt(classicSceneTextMiddleSprite, 0);
+    classicSceneTextMiddleContainer.addChildAt(classicSceneTextMiddle, 1);
+
+    // Clssic Top-left Texture
+    const classicSceneTextTopLeftTexture = await Assets.load(
+        "/img/SceneText_TopLeft_Classic.png",
+    );
+    const classicSceneTextTopLeftSprite = new PIXI.Sprite(
+        classicSceneTextTopLeftTexture,
+    );
+    const classicSceneTextTopLeft = new PIXI.Text(scene, {
+        fontFamily: "FOT-RodinNTLGPro-DB",
+        fontSize: 32,
+        fill: 0xffffff,
+        align: "center",
+    });
+    classicSceneTextTopLeft.anchor.set(0, 0.5);
+    classicSceneTextTopLeft.position.set(62, 76);
+
+    const classicSceneTextTopLeftContainer = new PIXI.Container();
+    classicSceneTextTopLeftContainer.addChildAt(
+        classicSceneTextTopLeftSprite,
+        0,
+    );
+    classicSceneTextTopLeftContainer.addChildAt(classicSceneTextTopLeft, 1);
+    classicSceneTextTopLeftContainer.visible = false;
+
+    const classicSceneTextBox = new PIXI.Container();
+    classicSceneTextBox.addChildAt(classicSceneTextMiddleContainer, 0);
+    classicSceneTextBox.addChildAt(classicSceneTextTopLeftContainer, 1);
+    classicSceneTextBox.visible = false;
+
+    sceneTextContainer.addChildAt(defaultSceneTextBox, 0);
+    sceneTextContainer.addChildAt(classicSceneTextBox, 1);
 
     app.stage.addChildAt(sceneTextContainer, childAt);
 
@@ -612,13 +678,29 @@ const LoadSceneText = async (
 
     return {
         sceneTextContainer: sceneTextContainer,
-        variant: {
-            middle: sceneTextMiddleContainer,
-            topLeft: sceneTextTopLeftContainer,
+        type: {
+            default: defaultSceneTextBox,
+            classic: classicSceneTextBox,
         },
-        text: [sceneTextMiddle, sceneTextTopLeft],
+        variant: {
+            middle: [
+                defaultSceneTextMiddleContainer,
+                classicSceneTextMiddleContainer,
+            ],
+            topLeft: [
+                defaultSceneTextTopLeftContainer,
+                classicSceneTextTopLeftContainer,
+            ],
+        },
+        text: [
+            defaultSceneTextMiddle,
+            defaultSceneTextTopLeft,
+            classicSceneTextMiddle,
+            classicSceneTextTopLeft,
+        ],
         textString: scene,
         visible: false,
+        typeSelected: "default",
         variantSelected: "middle",
     };
 };

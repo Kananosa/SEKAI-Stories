@@ -80,6 +80,11 @@
                 "middle": "Middle",
                 "top-left": "Top-left"
             },
+            "box-type": {
+                "header": "Box Type",
+                "default": "Default",
+                "classic": "Classic"
+            },
             "hide-everything": "Hide models and dialogue"
         },
         "y-offset": {

@@ -77,13 +77,29 @@ const SceneText: React.FC = () => {
     ) => {
         const value = event.target.value;
 
-        Object.entries(sceneText.variant).forEach(([type, container]) => {
-            container.visible = value === type;
+        Object.entries(sceneText.variant).forEach(([type, containers]) => {
+            containers.forEach(
+                (container) => (container.visible = value === type),
+            );
         });
 
         setSceneText({
             ...sceneText,
             variantSelected: value,
+        });
+    };
+    const handleSceneTextBoxTypeChange = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const value = event.target.value;
+
+        Object.entries(sceneText.type).forEach(([type, container]) => {
+            container.visible = value === type;
+        });
+
+        setSceneText({
+            ...sceneText,
+            typeSelected: value,
         });
     };
 
@@ -122,6 +138,33 @@ const SceneText: React.FC = () => {
                     />
                     <label className="width-100 radio__label" htmlFor="topLeft">
                         {t("text.scene-text.variant.top-left")}
+                    </label>
+                </div>
+            </div>
+            <div className="option__content">
+                <h3>{t("text.scene-text.box-type.header")}</h3>
+                <div className="flex-horizontal center padding-top-bottom-10">
+                    <RadioButton
+                        name="scene-text-box-type"
+                        value="default"
+                        onChange={handleSceneTextBoxTypeChange}
+                        id="default"
+                        data={sceneText.typeSelected}
+                    />
+                    <label className="width-100 radio__label" htmlFor="default">
+                        {t("text.scene-text.box-type.default")}
+                    </label>
+                </div>
+                <div className="flex-horizontal center padding-top-bottom-10">
+                    <RadioButton
+                        name="scene-text-box-type"
+                        value="classic"
+                        id="classic"
+                        onChange={handleSceneTextBoxTypeChange}
+                        data={sceneText.typeSelected}
+                    />
+                    <label className="width-100 radio__label" htmlFor="classic">
+                        {t("text.scene-text.box-type.classic")}
                     </label>
                 </div>
             </div>
