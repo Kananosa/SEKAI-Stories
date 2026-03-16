@@ -12,7 +12,7 @@ const SceneText: React.FC = () => {
 
     const { text, setText, sceneText, setSceneText, modelWrapper } = scene;
 
-    if (!text || !sceneText) return <p>{t("please-wait")}</p>;
+    if (!text || !sceneText) return <p>{t("loadings.please-wait")}</p>;
 
     const handleSceneTextVisible = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -95,6 +95,13 @@ const SceneText: React.FC = () => {
 
         Object.entries(sceneText.type).forEach(([type, container]) => {
             container.visible = value === type;
+        });
+
+        Object.entries(sceneText.variant).forEach(([type, containers]) => {
+            containers.forEach(
+                (container) =>
+                    (container.visible = sceneText.variantSelected === type),
+            );
         });
 
         setSceneText({

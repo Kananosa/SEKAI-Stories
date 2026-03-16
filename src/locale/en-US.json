@@ -88,6 +88,15 @@
             },
             "hide-everything": "Hide models and dialogue"
         },
+        "choices-text": {
+            "header": "Choices Text",
+            "box-type": {
+                "header": "Box Type",
+                "default": "Default",
+                "classic": "Classic"
+            },
+            "dialogue-box-visible": "Dialogue Box Visible"
+        },
         "y-offset": {
             "header": "Y-Offset",
             "details": "If the text in the canvas do not line up properly, adjustments may be necessary."
@@ -127,6 +136,7 @@
             "pose": "Pose",
             "select-pose": "Select a pose",
             "expression": "Expression",
+            "run-both": "Run Both",
             "select-expression": "Select an expression"
         },
         "transform": {
@@ -155,6 +165,7 @@
                 "select-parameter": "Select a parameter",
                 "tooltip": "You can use your arrow keys to select and adjust parameters."
             },
+            "reapply-all": "Re-apply All",
             "idle": "Idle Animation",
             "import-export": {
                 "header": "Import/Export",
@@ -316,11 +327,19 @@
             "header": "Background Menu",
             "select-upload": {
                 "header": "Select and Upload",
-                "paragraph": "Select backgrounds from Project SEKAI or upload your own."
+                "paragraph": "Select backgrounds from Project SEKAI or upload your own.",
+                "split": {
+                    "header": "Split Location",
+                    "paragraph": "You can also do Split Location, showing two in one background."
+                }
             },
-            "split": {
-                "header": "Split Location",
-                "paragraph": "You can also do Split Location, showing two in one background."
+            "lighting": {
+                "header": "Lighting",
+                "paragraph": "Change the color tint of the foreground according to your background setting."
+            },
+            "filters": {
+                "header": "Filters",
+                "paragraph": "Add filters to the whole canvas."
             }
         },
         "text-menu": {
@@ -340,6 +359,10 @@
             "scene-text": {
                 "header": "Scene Text",
                 "paragraph": "The time and location of the scene you're making, usually seen at the start of every PJSK story."
+            },
+            "choices-text": {
+                "header": "Choices Text",
+                "paragraph": "Two button choices you can edit, usually seen during OG Miku's conversations."
             }
         },
         "model-menu": {

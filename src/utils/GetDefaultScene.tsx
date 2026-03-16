@@ -12,6 +12,20 @@ import IModel from "../types/IModel";
 import { IFilter } from "../types/IFilter";
 import { AdjustmentFilter } from "pixi-filters";
 import { ILighting } from "../types/ILighting";
+import { InitialScene } from "../types/IInitialScene";
+import { CheckSceneCategory, randomInitialScene } from "../data/Scenes";
+import IChoicesText from "../types/IChoicesText";
+import {
+    SetupChoicesText,
+    SetupDialogueText,
+    SetupSceneText,
+} from "./TextSceneSetupHelper";
+import {
+    choicesTextsSetupData,
+    dialogueBoxesSetupData,
+    sceneCenterTextsSetupData,
+    sceneTopLeftTexts,
+} from "../data/TextSetups";
 
 interface GetDefaultSceneProps {
     app: PIXI.Application | undefined;
@@ -19,249 +33,8 @@ interface GetDefaultSceneProps {
     setLoading: Dispatch<SetStateAction<number>>;
     blankCanvas: boolean;
 }
-interface InitialScene {
-    background: string;
-    text: string;
-    nameTag: string;
-    modelX: number;
-    modelY: number;
-    modelScale?: number;
-    pngName: string;
-    sceneText: string;
-}
-
-const randomInitialScene: Record<string, InitialScene[]> = {
-    default: [
-        {
-            background: "/background_special/Background_Uranohoshi_Rooftop.jpg",
-            text: "I'm ○○○-sama's little demon number four...\nM-Momoi Airi...",
-            nameTag: "Airi",
-            modelX: 960,
-            modelY: 590,
-            pngName: "airi_littledemon",
-            sceneText: "Uranohoshi High School Rooftop",
-        },
-
-        {
-            background: "/background_special/Background_Nijigasaki.jpg",
-            text: "A-am I doing it right?",
-            nameTag: "Kanade",
-            modelX: 960,
-            modelY: 630,
-            pngName: "kanade-idol",
-            sceneText: "Nijigasaki School Idol Club",
-        },
-        {
-            background: "/background_special/Background_Circle.png",
-            text: "...",
-            nameTag: "Shiho",
-            modelX: 960,
-            modelY: 610,
-            pngName: "shiho",
-            sceneText: "Music Shop(?)",
-        },
-        {
-            background: "/background_compressed/bg_a001701.jpg",
-            text: "...!",
-            nameTag: "Airi",
-            modelX: 960,
-            modelY: 540,
-            pngName: "girlfriend_meme",
-            sceneText: "Mall",
-        },
-        {
-            background: "/background_special/Background_Akarin.jpg",
-            text: "Haiii～!",
-            nameTag: "Emu",
-            modelX: 960,
-            modelY: 540,
-            pngName: "emu_channnnn",
-            sceneText: "???",
-        },
-    ],
-    halloween: [
-        {
-            background: "/background_special/Background_Cheat_to_Happiness.jpg",
-            text: "→↓↑→→↓→→↑↑↓↓←→←→",
-            nameTag: "Mafuyu",
-            modelX: 960,
-            modelY: 545,
-            pngName: "mafuyu_oct",
-            sceneText: "Mafuyu's Room",
-        },
-        {
-            background:
-                "/background_special/Background_Cheat_to_Happiness_2.png",
-            text: "If you've entered the secret code properly up to this point, perhaps you'll take on a happier form?",
-            nameTag: "(Translation)",
-            modelX: 960,
-            modelY: 545,
-            pngName: "transparent",
-            sceneText: "???",
-        },
-
-        {
-            background: "/background_special/Background_Kisaragi.png",
-            text: "",
-            nameTag: "",
-            modelX: 1000,
-            modelY: 640,
-            pngName: "mizuki_kisaragi",
-            sceneText: "",
-        },
-        {
-            background: "/background_special/Background_Nemui.png",
-            text: "Let's take some medicine and go to bed!",
-            nameTag: "Ena",
-            modelX: 960,
-            modelY: 540,
-            pngName: "ena_nemui",
-            sceneText: "???",
-        },
-        {
-            background: "/background_special/Background_Ame.jpg",
-            text: "... where the hell am I?!",
-            nameTag: "Ena",
-            modelX: 960,
-            modelY: 605,
-            pngName: "ena_kangel",
-            sceneText: "???",
-        },
-        {
-            background: "/background_special/Background_Exit8.png",
-            text: "...!",
-            nameTag: "Kanade",
-            modelX: 960,
-            modelY: 540,
-            pngName: "k_parents",
-            sceneText: "???",
-        },
-        {
-            background: "/background_compressed/bg_a002301.jpg",
-            text: "Ah, wrong series!",
-            nameTag: "???",
-            modelX: 960,
-            modelY: 570,
-            pngName: "setsuna",
-            sceneText: "Scramble Crossing",
-        },
-        {
-            background: "/background_special/Background_Perfect.jpg",
-            text: "(Everything that I can say is spoken for me.)",
-            nameTag: "Minori",
-            modelX: 960,
-            modelY: 545,
-            pngName: "minori_spoken_for",
-            sceneText: "Stage",
-        },
-        {
-            background: "/background_compressed/bg_a003003.jpg",
-            text: "Jumpscare Wonderhoy!",
-            nameTag: "Emu",
-            modelX: 960,
-            modelY: 545,
-            pngName: "emu_jumpscare",
-            sceneText: "Emu's Room",
-        },
-    ],
-    anniversary: [
-        {
-            background: "/background_special/Background_Uranohoshi.png",
-            text: "No, I will not do Ai♡Scream for you.",
-            nameTag: "Airi",
-            modelX: 960,
-            modelY: 625,
-            modelScale: 1,
-            pngName: "airi",
-            sceneText: "Uranohoshi High School Club Room",
-        },
-    ],
-    "727": [
-        {
-            background: "/background_special/Background_BlueZenith.jpg",
-            text: "...",
-            nameTag: "Ena",
-            modelX: 640,
-            modelY: 620,
-            modelScale: 1.25,
-            pngName: "mizuki_wysi",
-            sceneText: "Blue Zenith",
-        },
-    ],
-    mizuki: [
-        {
-            background:
-                "/background_special/Background_Other_Kamiyama_(Resolved).png",
-            text: "You are a part of me...",
-            nameTag: "Mizuki",
-            modelX: 960,
-            modelY: 545,
-            pngName: "mizuki_accept",
-            sceneText: "Kamiyama High School Rooftop(?)",
-        },
-        {
-            background: "/background_special/Background_Pursuing.png",
-            text: "We're all trapped in a maze of relationships.",
-            nameTag: "Tagline",
-            modelX: 960,
-            modelY: 540,
-            pngName: "mizuki_pursuing",
-            sceneText: "I search for your heart, pursuing my true self",
-        },
-        {
-            background: "/background_special/Background_BIRDBRAIN.jpg",
-            text: "#$%@!",
-            nameTag: "Mizuki",
-            modelX: 960,
-            modelY: 540,
-            pngName: "mizuki_birdbrain",
-            sceneText: "???",
-        },
-    ],
-};
-
-const CheckDate = (blank: boolean): string => {
-    if (blank) return "blank";
-
-    const date = new Date();
-    const [month, day] = [date.getMonth() + 1, date.getDate()];
-
-    const months: Record<number, string> = {
-        10: "halloween",
-        // 12: "christmas", # TODO
-    };
-
-    if (month in months) return months[month];
-
-    const range: Array<[number, number, number, string]> = [
-        [4, 10, 30, "anniversary"],
-    ];
-
-    for (const [m, start, end, value] of range) {
-        if (month === m && day >= start && day <= end) return value;
-    }
-
-    const exact: Record<string, string> = {
-        "7-27": "727",
-        "8-27": "mizuki",
-    };
-
-    return exact[`${month}-${day}`] ?? "default";
-};
 
 const LoadInitialScene = (scene: string): InitialScene => {
-    if (scene === "blank") {
-        return {
-            background: "/background_compressed/bg_white.jpg",
-            text: "<insert text here>",
-            nameTag: "<name>",
-            modelX: 900,
-            modelY: 550,
-            pngName: "blank",
-            sceneText: "<white>",
-        };
-    }
-
     return randomInitialScene[scene][
         Math.floor(Math.random() * randomInitialScene[scene].length)
     ];
@@ -412,9 +185,6 @@ const LoadModel = async (
     };
 };
 
-/**
- * TODO: Refactor this massive block of shit.
- */
 const LoadText = async (
     app: PIXI.Application,
     childAt: number,
@@ -427,124 +197,46 @@ const LoadText = async (
 
     const textContainer = new PIXI.Container();
 
-    // Default Texture
-    const defaultTextBackgroundTexture = await Assets.load(
-        "/img/Dialogue_Background.png",
+    const {
+        textContainer: defaultTextContainer,
+        textDialogue: defaultTextDialogue,
+        textNameTag: defaultTextNameTag,
+    } = await SetupDialogueText(
+        dialogueBoxesSetupData.default,
+        nameTag,
+        dialogue,
     );
-    const defaultTextBackgroundSprite = new PIXI.Sprite(
-        defaultTextBackgroundTexture,
+    const {
+        textContainer: classicTextContainer,
+        textDialogue: classicTextDialogue,
+        textNameTag: classicTextNameTag,
+    } = await SetupDialogueText(
+        dialogueBoxesSetupData.classic,
+        nameTag,
+        dialogue,
     );
-    defaultTextBackgroundSprite.width = 1920;
-    defaultTextBackgroundSprite.height = 1080;
-
-    const defaultTextNameTag = new PIXI.Text(nameTag, {
-        fontFamily: "FOT-RodinNTLGPro-EB",
-        fontSize: 44,
-        fill: 0xebebef,
-        stroke: 0x5d5d79,
-        strokeThickness: 8,
-    });
-    defaultTextNameTag.position.set(225, 775 + textAlignmentCookie);
-
-    const defaultTextDialogue = new PIXI.Text(dialogue, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 44,
-        fill: 0xffffff,
-        stroke: 0x5d5d79,
-        strokeThickness: 8,
-        wordWrap: true,
-        wordWrapWidth: 1300,
-        breakWords: true,
-        lineHeight: 55,
-    });
-    defaultTextDialogue.position.set(245, 845 + textAlignmentCookie);
-
-    const defaultTextBox = new PIXI.Container();
-    defaultTextBox.addChildAt(defaultTextBackgroundSprite, 0);
-    defaultTextBox.addChildAt(defaultTextNameTag, 1);
-    defaultTextBox.addChildAt(defaultTextDialogue, 2);
-
-    // Classic Texture
-    const classicTextBackgroundTexture = await Assets.load(
-        "/img/Dialogue_Background_Classic.png",
+    const {
+        textContainer: mySekaiTextContainer,
+        textDialogue: mySekaiTextDialogue,
+        textNameTag: mySekaiTextNameTag,
+    } = await SetupDialogueText(
+        dialogueBoxesSetupData.mySekai,
+        nameTag,
+        dialogue,
     );
-    const classicTextBackgroundSprite = new PIXI.Sprite(
-        classicTextBackgroundTexture,
-    );
-    classicTextBackgroundSprite.width = 1920;
-    classicTextBackgroundSprite.height = 1080;
 
-    const classicTextNameTag = new PIXI.Text(nameTag, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 44,
-        fill: 0xffffff,
-    });
-    classicTextNameTag.position.set(295, 730 + textAlignmentCookie);
-
-    const classicTextDialogue = new PIXI.Text(dialogue, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 44,
-        fill: 0x444466,
-        wordWrap: true,
-        wordWrapWidth: 1300,
-        breakWords: true,
-        lineHeight: 55,
-    });
-    classicTextDialogue.position.set(245, 805 + textAlignmentCookie);
-
-    const classicTextBox = new PIXI.Container();
-    classicTextBox.addChildAt(classicTextBackgroundSprite, 0);
-    classicTextBox.addChildAt(classicTextNameTag, 1);
-    classicTextBox.addChildAt(classicTextDialogue, 2);
-
-    classicTextBox.visible = false;
-
-    // MYSEKAI Texture
-    const mySekaiTextBackgroundTexture = await Assets.load(
-        "/img/Dialogue_Background_MYSEKAI.png",
-    );
-    const mySekaiTextBackgroundSprite = new PIXI.Sprite(
-        mySekaiTextBackgroundTexture,
-    );
-    mySekaiTextBackgroundSprite.width = 1920;
-    mySekaiTextBackgroundSprite.height = 1080;
-
-    const mySekaiTextNameTag = new PIXI.Text(nameTag, {
-        fontFamily: "FOT-RodinNTLGPro-EB",
-        fontSize: 44,
-        fill: 0x444466,
-    });
-    mySekaiTextNameTag.position.set(265, 745 + textAlignmentCookie);
-
-    const mySekaiTextDialogue = new PIXI.Text(dialogue, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 44,
-        fill: 0x444466,
-        wordWrap: true,
-        wordWrapWidth: 1300,
-        breakWords: true,
-        lineHeight: 55,
-    });
-    mySekaiTextDialogue.position.set(265, 810 + textAlignmentCookie);
-
-    const mySekaiTextBox = new PIXI.Container();
-    mySekaiTextBox.addChildAt(mySekaiTextBackgroundSprite, 0);
-    mySekaiTextBox.addChildAt(mySekaiTextNameTag, 1);
-    mySekaiTextBox.addChildAt(mySekaiTextDialogue, 2);
-    mySekaiTextBox.visible = false;
-
-    textContainer.addChildAt(defaultTextBox, 0);
-    textContainer.addChildAt(classicTextBox, 1);
-    textContainer.addChildAt(mySekaiTextBox, 2);
+    textContainer.addChildAt(defaultTextContainer, 0);
+    textContainer.addChildAt(classicTextContainer, 1);
+    textContainer.addChildAt(mySekaiTextContainer, 2);
 
     app.stage.addChildAt(textContainer, childAt);
 
     return {
         textContainer: textContainer,
         type: {
-            default: defaultTextBox,
-            classic: classicTextBox,
-            mySekai: mySekaiTextBox,
+            default: defaultTextContainer,
+            classic: classicTextContainer,
+            mySekai: mySekaiTextContainer,
         },
         nameTag: [defaultTextNameTag, classicTextNameTag, mySekaiTextNameTag],
         dialogue: [
@@ -562,9 +254,49 @@ const LoadText = async (
     };
 };
 
-/**
- * TODO: Refactor this massive block of shit.
- */
+const LoadChoicesText = async (
+    app: PIXI.Application,
+    childAt: number,
+    enabled: boolean,
+    choices: {
+        choice1: string;
+        choice2: string;
+    },
+): Promise<IChoicesText> => {
+    const choicesTextContainer = new PIXI.Container();
+
+    const {
+        choicesTextContainer: defaultChoicesTextContainer,
+        choicesFirstText: defaultChoicesFirstText,
+        choicesSecondText: defaultChoicesSecondText,
+    } = await SetupChoicesText(choicesTextsSetupData.default, choices);
+    const {
+        choicesTextContainer: classicChoicesTextContainer,
+        choicesFirstText: classicChoicesFirstText,
+        choicesSecondText: classicChoicesSecondText,
+    } = await SetupChoicesText(choicesTextsSetupData.classic, choices);
+
+    choicesTextContainer.addChildAt(defaultChoicesTextContainer, 0);
+    choicesTextContainer.addChildAt(classicChoicesTextContainer, 1);
+
+    app.stage.addChildAt(choicesTextContainer, childAt);
+    choicesTextContainer.visible = enabled;
+
+    return {
+        choicesTextContainer,
+        type: {
+            default: defaultChoicesTextContainer,
+            classic: classicChoicesTextContainer,
+        },
+        firstChoiceText: [defaultChoicesFirstText, classicChoicesFirstText],
+        secondChoiceText: [defaultChoicesSecondText, classicChoicesSecondText],
+        firstChoiceTextString: choices.choice1,
+        secondChoiceTextString: choices.choice2,
+        typeSelected: "default",
+        visible: enabled,
+    };
+};
+
 const LoadSceneText = async (
     app: PIXI.Application,
     childAt: number,
@@ -572,97 +304,26 @@ const LoadSceneText = async (
 ): Promise<ISceneText> => {
     const sceneTextContainer = new PIXI.Container();
 
-    // Default Middle Texture
-    const defaultSceneTextMiddleTexture = await Assets.load(
-        "/img/SceneText_Background.png",
-    );
-    const defaultSceneTextMiddleSprite = new PIXI.Sprite(
-        defaultSceneTextMiddleTexture,
-    );
-    const defaultSceneTextMiddle = new PIXI.Text(scene, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 44,
-        fill: 0xffffff,
-        align: "center",
-    });
-    defaultSceneTextMiddle.anchor.set(0.5, 0.5);
-    defaultSceneTextMiddle.position.set(960, 540);
-
-    const defaultSceneTextMiddleContainer = new PIXI.Container();
-    defaultSceneTextMiddleContainer.addChildAt(defaultSceneTextMiddleSprite, 0);
-    defaultSceneTextMiddleContainer.addChildAt(defaultSceneTextMiddle, 1);
-
-    // Default Top-left Texture
-    const defaultSceneTextTopLeftTexture = await Assets.load(
-        "/img/SceneText_TopLeft.png",
-    );
-    const defaultSceneTextTopLeftSprite = new PIXI.Sprite(
-        defaultSceneTextTopLeftTexture,
-    );
-    const defaultSceneTextTopLeft = new PIXI.Text(scene, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 39,
-        fill: 0xffffff,
-        align: "center",
-    });
-    defaultSceneTextTopLeft.anchor.set(0, 0.5);
-    defaultSceneTextTopLeft.position.set(120, 62);
-
-    const defaultSceneTextTopLeftContainer = new PIXI.Container();
-    defaultSceneTextTopLeftContainer.addChildAt(
-        defaultSceneTextTopLeftSprite,
-        0,
-    );
-    defaultSceneTextTopLeftContainer.addChildAt(defaultSceneTextTopLeft, 1);
-    defaultSceneTextTopLeftContainer.visible = false;
+    const {
+        sceneText: defaultSceneTextMiddle,
+        sceneTextContainer: defaultSceneTextMiddleContainer,
+    } = await SetupSceneText(sceneCenterTextsSetupData.default, scene);
+    const {
+        sceneText: classicSceneTextMiddle,
+        sceneTextContainer: classicSceneTextMiddleContainer,
+    } = await SetupSceneText(sceneCenterTextsSetupData.classic, scene);
+    const {
+        sceneText: defaultSceneTextTopLeft,
+        sceneTextContainer: defaultSceneTextTopLeftContainer,
+    } = await SetupSceneText(sceneTopLeftTexts.default, scene);
+    const {
+        sceneText: classicSceneTextTopLeft,
+        sceneTextContainer: classicSceneTextTopLeftContainer,
+    } = await SetupSceneText(sceneTopLeftTexts.classic, scene);
 
     const defaultSceneTextBox = new PIXI.Container();
     defaultSceneTextBox.addChildAt(defaultSceneTextMiddleContainer, 0);
     defaultSceneTextBox.addChildAt(defaultSceneTextTopLeftContainer, 1);
-
-    // Classic Center Texture
-    const classicSceneTextMiddleTexture = await Assets.load(
-        "/img/SceneText_Background_Classic.png",
-    );
-    const classicSceneTextMiddleSprite = new PIXI.Sprite(
-        classicSceneTextMiddleTexture,
-    );
-    const classicSceneTextMiddle = new PIXI.Text(scene, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 40,
-        fill: 0xffffff,
-        align: "center",
-    });
-    classicSceneTextMiddle.anchor.set(0.5, 0.5);
-    classicSceneTextMiddle.position.set(960, 540);
-
-    const classicSceneTextMiddleContainer = new PIXI.Container();
-    classicSceneTextMiddleContainer.addChildAt(classicSceneTextMiddleSprite, 0);
-    classicSceneTextMiddleContainer.addChildAt(classicSceneTextMiddle, 1);
-
-    // Clssic Top-left Texture
-    const classicSceneTextTopLeftTexture = await Assets.load(
-        "/img/SceneText_TopLeft_Classic.png",
-    );
-    const classicSceneTextTopLeftSprite = new PIXI.Sprite(
-        classicSceneTextTopLeftTexture,
-    );
-    const classicSceneTextTopLeft = new PIXI.Text(scene, {
-        fontFamily: "FOT-RodinNTLGPro-DB",
-        fontSize: 32,
-        fill: 0xffffff,
-        align: "center",
-    });
-    classicSceneTextTopLeft.anchor.set(0, 0.5);
-    classicSceneTextTopLeft.position.set(62, 76);
-
-    const classicSceneTextTopLeftContainer = new PIXI.Container();
-    classicSceneTextTopLeftContainer.addChildAt(
-        classicSceneTextTopLeftSprite,
-        0,
-    );
-    classicSceneTextTopLeftContainer.addChildAt(classicSceneTextTopLeft, 1);
-    classicSceneTextTopLeftContainer.visible = false;
 
     const classicSceneTextBox = new PIXI.Container();
     classicSceneTextBox.addChildAt(classicSceneTextMiddleContainer, 0);
@@ -729,7 +390,7 @@ export const LoadScene = async ({
     setLoading,
     blankCanvas,
 }: GetDefaultSceneProps) => {
-    const scene = CheckDate(blankCanvas);
+    const scene = CheckSceneCategory(blankCanvas);
 
     setLoading(0);
     const initialScene: InitialScene = LoadInitialScene(scene);
@@ -752,24 +413,15 @@ export const LoadScene = async ({
     Live2DModel.registerTicker(PIXI.Ticker);
 
     setLoading(20);
-    // Load Transparent (for development. idk why it causes issues before production)
-    const transparentContainer = new PIXI.Container();
-    const transparentSprite = await getBackground(
-        "/background_special/Background_Transparent.png",
-    );
-    transparentContainer.addChildAt(transparentSprite, 0);
-    initApplication.stage.addChildAt(transparentContainer, 0);
-
-    setLoading(30);
     // Load Filter Container
     const filterContainer = new PIXI.Container();
     filterContainer.pivot.set(1920 / 2, 1080 / 2);
     filterContainer.position.set(1920 / 2, 1080 / 2);
     filterContainer.scale.set(1, 1);
-    initApplication.stage.addChildAt(filterContainer, 1);
+    initApplication.stage.addChildAt(filterContainer, 0);
     const filter: IFilter = { container: filterContainer };
 
-    setLoading(40);
+    setLoading(30);
     // Load Background
     setStartingMessage("Adding background...");
     const background = await LoadBackground(
@@ -778,12 +430,14 @@ export const LoadScene = async ({
         initialScene["background"],
     );
 
-    setLoading(50);
+    setLoading(40);
     // Load Split Background
+    setStartingMessage("Adding split background...");
     const splitBackground = await LoadSplitBackground(filterContainer, 1);
 
-    setLoading(60);
+    setLoading(50);
     // Load Sample PNG Sprite
+    setStartingMessage("Adding sample model...");
     const { model, modelWrapper, lighting } = await LoadModel(
         filterContainer,
         2,
@@ -793,18 +447,29 @@ export const LoadScene = async ({
         initialScene.modelScale ?? 1,
     );
 
-    setLoading(70);
+    setLoading(60);
     // Load Text
-    setStartingMessage("Adding text...");
+    setStartingMessage("Adding dialogue text...");
     const text = await LoadText(
         initApplication,
-        2,
+        1,
         initialScene.nameTag,
         initialScene.text,
     );
 
-    setLoading(80);
+    // Load Choices Text
+    setLoading(70);
+    setStartingMessage("Adding choices text...");
+    const choicesText = await LoadChoicesText(
+        initApplication,
+        2,
+        initialScene.choicesEnabled ?? false,
+        initialScene.choices ?? { choice1: "Choice 1", choice2: "Choice 2" },
+    );
+
     // Load Scene Setting Text
+    setLoading(80);
+    setStartingMessage("Adding scene text...");
     const sceneText = await LoadSceneText(
         initApplication,
         3,
@@ -813,6 +478,7 @@ export const LoadScene = async ({
 
     setLoading(90);
     // Load Guideline Tools
+    setStartingMessage("Adding guidelines...");
     const guideline = await LoadGuideline(initApplication, 4);
 
     setLoading(100);
@@ -826,6 +492,7 @@ export const LoadScene = async ({
         background: background,
         splitBackground: splitBackground,
         text: text,
+        choicesText: choicesText,
         sceneText: sceneText,
         filter: filter,
         guideline: guideline,
